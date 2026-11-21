@@ -221,3 +221,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ETL Helper local data
+data/etl_helper.db
+data/*.db-journal
+

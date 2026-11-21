@@ -1,0 +1,27 @@
+{
+  "quotas": {
+    "PowerCenter": 400,
+    "IICS": 350,
+    "SQL": 250
+  },
+  "difficulties": ["beginner", "intermediate", "advanced", "senior", "expert"],
+  "categories": [
+    "Mapping design scenarios",
+    "Transformation scenarios",
+    "Lookup scenarios",
+    "Incremental loading scenarios",
+    "SCD implementation scenarios",
+    "Performance tuning scenarios",
+    "Data quality scenarios",
+    "Duplicate handling scenarios",
+    "Error handling scenarios",
+    "Workflow and taskflow scenarios",
+    "Production support scenarios",
+    "Recovery and restart scenarios",
+    "Data reconciliation scenarios",
+    "Complex business logic scenarios",
+    "Architecture and framework scenarios",
+    "Real-time project challenges"
+  ],
+  "notes": "Briefs are expanded by scripts/generate_bank.py using src.services.content_author"
+}
