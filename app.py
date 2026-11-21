@@ -13,12 +13,21 @@ if str(ROOT) not in sys.path:
 
 from src.db.connection import get_connection, init_db
 from src.db.repositories import ScenarioRepository
+from src.services.bootstrap import TARGET_TOTAL, ensure_scenario_bank, published_count
 from src.services.difficulty_service import difficulties_for_experience, experience_options
 from src.ui.theme import apply_theme, hero
 
 apply_theme(page_title="ETL Helper")
 
 init_db()
+
+# Auto-build the bank if this install has no/partial DB (common on first run / deploy).
+if published_count() < TARGET_TOTAL:
+    with st.spinner("Preparing your 1,000 interview scenarios for the first time…"):
+        boot = ensure_scenario_bank()
+    if boot.get("bootstrapped"):
+        st.toast(f"Loaded {boot['published']} scenarios", icon=":material/check_circle:")
+
 conn = get_connection()
 repo = ScenarioRepository(conn)
 
@@ -76,10 +85,14 @@ with steps:
         st.markdown("#### 3. Grow")
         st.caption("Use Expansion to add more practice scenarios when you want fresh ones.")
 
-if total < 1000:
+if total < TARGET_TOTAL:
     st.warning(
-        "Scenario bank is below 1,000 questions. Run `python scripts/generate_bank.py --reset`.",
-        title="Bank not ready",
+        "Still loading scenarios. Pull to refresh, or wait a few seconds and reopen Home.",
+        title="Almost ready",
     )
+    if st.button("Build scenario bank now", type="primary"):
+        with st.spinner("Building 1,000 scenarios…"):
+            ensure_scenario_bank()
+        st.rerun()
 else:
     st.success("You have 1,000+ practical scenarios ready to practice.", title="Ready")

@@ -14,12 +14,16 @@ if str(ROOT) not in sys.path:
 
 from src.db.connection import get_connection, init_db
 from src.db.repositories import ChatRepository, ScenarioRepository
+from src.services.bootstrap import TARGET_TOTAL, ensure_scenario_bank, published_count
 from src.services.chat_service import ask_about_scenario
 from src.services.explanation_renderer import render_explanation
 from src.ui.theme import apply_theme, difficulty_badge, hero, label_badge, tech_badge
 
 apply_theme(page_title="Scenario Workbench")
 init_db()
+if published_count() < TARGET_TOTAL:
+    with st.spinner("Preparing scenario bank…"):
+        ensure_scenario_bank()
 conn = get_connection()
 repo = ScenarioRepository(conn)
 chat_repo = ChatRepository(conn)
